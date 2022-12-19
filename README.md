@@ -1,9 +1,9 @@
 # CherryNet
 A utility for provisioning a cherrytree file with nmap scans
 
-This utility is designed to automatically import nmap data into cherrytree, using the outputs nmap can natively generate. 
+This utility is designed to automatically import nmap data into existing cherrytree files, using the outputs nmap can natively generate. 
 
-The concept is similar to https://github.com/sergiodmn/cherrymap, but with some improvements planned
+See also: https://github.com/sergiodmn/cherrymap
 
 # Featurelist
 - [X] Process encrypted and unencrypted files, as pentests generally demand certain encryption-at-rest policies (Note in either case, XML formatting is required)
