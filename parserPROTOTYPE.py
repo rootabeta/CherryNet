@@ -8,6 +8,7 @@ print("Time is {}".format(int(time())))
 seen_IDs = []
 
 file = sys.argv[1]
+foundParent = False
 try:
     desiredroot = sys.argv[2]
 except:
@@ -18,6 +19,7 @@ tree = ET.parse(file)
 root = tree.getroot() #Cherrytree
 if desiredroot == 'cherrytree':
     parent = root
+    foundParent = True #That was easy
 
 if root.tag != 'cherrytree':
     exit("Not a valid CT file!")
@@ -28,8 +30,9 @@ for elem in root.iter():
         print("NODE")
         pprint(elem.attrib)
         seen_IDs.append(int(elem.attrib["unique_id"]))
-        if elem.attrib["name"] == desiredroot:
+        if elem.attrib["name"] == desiredroot and not foundParent: 
             print("FOUND PARENT")
+            foundParent = True
             parent = elem #Not great, but it works
         
     elif elem.tag == "rich_text":
@@ -78,5 +81,7 @@ print("\nFINAL CUT")
 ET.indent(root)
 print(ET.tostring(root,pretty_print=True).decode())
 
+with open("OUTFILE.xml","wb") as f:
+    tree.write(f)
 #Each node has a <rich_text> with the text (e.g. for a service, the banner info) and a <node> for any subnodes (e.g. services>22 - ssh)
 
