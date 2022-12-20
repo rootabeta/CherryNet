@@ -23,6 +23,9 @@ class Archive():
             remove(path.join(self.tempPath,file))
         rmdir(self.tempPath)
 
+    def new(self):
+        raise NotImplementedError("New encrypted archive not yet supported") # TODO: Handle empty file
+
     def open(self):
         if self.archivePath[-4:] != ".ctz":
             return -1 #Invalid file format
