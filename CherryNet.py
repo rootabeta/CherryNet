@@ -104,8 +104,12 @@ def processFile(targetFile, nmapFile, desiredRoot, isNewFile):
         hostDetails = ET.SubElement(hostElement,"rich_text") #No need for attribs here
         hostDetails.text = "WRITEUP: \n1)"
 
-        if hostOS: #Fill in details about the host itself - OS and such. Useful! All subsequent auto host notes go at the END
+        if hostOS: #Fill in details about the host itself - OS and such. Useful! All subsequent auto host notes go at the END. Set dupHost flag!
             hostDetails.text += "\n\n{}".format(hostOS) #TODO: Does this actually work?
+        
+        serviceAttribs = make_attrib("Services",unique_id)
+        unique_id += 1
+        serviceElement = ET.SubElement(hostElement,"node",attrib=serviceAttribs)
 
         for port in host.get_ports(): 
             is_open  = host.get_service(port[0],protocol=port[1]).open
@@ -114,16 +118,29 @@ def processFile(targetFile, nmapFile, desiredRoot, isNewFile):
             service  = host.get_service(port[0],protocol=port[1]).service
             banner   = host.get_service(port[0],protocol=port[1]).banner
             
-            #TODO: Here, again, we check - is there already a node with our chosen port specifier? (Just check the port/proto, not the rest - space delimeter.
+            #TODO: Here, again, we check - is there already a node with our chosen port specifier? (Just check the port/proto, not the rest - space delimeter) FOR THIS SPECIFIC HOST???
             #TODO: If so, this is a duplicate - add rather than overwrite!
 
-            portAttribs = make_attrib("{}/{} - {} ({})".format(portnum,protocol,service, "OPEN" if is_open else "CLOSED"),unique_id) #TODO: Different icons for different port statuses? I know CT has them, but not their ID codes. Low priority.
+            portAttribs = make_attrib("{}/{} - {} ({})".format(portnum,protocol,service, "OPEN" if is_open else "FILTERED/CLOSED"),unique_id) #TODO: Different icons for different port statuses? I know CT has them, but not their ID codes. Low priority.
             unique_id += 1 #NEVER FORGET THIS!
 
-            portElement = ET.SubElement(hostElement,"node",attrib=portAttribs)
+            portElement = ET.SubElement(serviceElement,"node",attrib=portAttribs)
             portDetails = ET.SubElement(portElement,"rich_text")
             if banner:
                 portDetails.text = banner
+
+        privescAttribs = make_attrib("Privesc/Local",unique_id)
+        unique_id += 1
+        privescElement = ET.SubElement(hostElement, "node", attrib=privescAttribs)
+
+        lootAttribs = make_attrib("Loot",unique_id)
+        unique_id += 1
+        lootElement = ET.SubElement(hostElement, "node", attrib=lootAttribs)
+        
+        notesAttribs = make_attrib("Notes and Scratchpad",unique_id)
+        unique_id += 1
+        notesElement = ET.SubElement(hostElement, "node", attrib=notesAttribs) #Confession: I don't think I actually need the notesElement = part, but I'm too scared to delete it in case I do. This is my first time with lxml
+
         debug("Attached {}!".format(hostName))
 
 #        parent.append(hostDetails)
