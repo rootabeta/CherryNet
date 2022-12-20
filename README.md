@@ -7,11 +7,11 @@ See also: https://github.com/sergiodmn/cherrymap
 Note that like CherryMap, this utility **WILL NOT WORK** with non-XML CherryTree files (although unlike CherryMap, CherryNet accepts both encrypted and unencrypted XML formats.) SQLite handling is **not** planned.  
 
 # Featurelist
+- [ ] HIGH PRIORITY: Adding, rather than replacing or duplicating, results for multiple scans for the same host (Similar to how pentest.ws and other services allow multiple scans of the same host)
 - [X] Process encrypted and unencrypted files, as pentests generally demand certain encryption-at-rest policies (Note in either case, XML formatting is required)
 - [ ] Allow for custom formatting of added nodes for personalized layouts
-- [ ] Declare parent nodes for new nodes to be added to - useful for large pentests with multiple network segments
+- [X] Declare parent nodes for new nodes to be added to - useful for large pentests with multiple network segments
 - [ ] Enhanced at-a-glance provisioning and templating
-- [ ] Adding, rather than replacing or duplicating, results for multiple scans for the same host (Similar to how pentest.ws and other services allow multiple scans of the same host)
 
 # Usage
 Usage information will be placed here once the tool is in a more complete state. 
