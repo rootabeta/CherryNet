@@ -100,7 +100,7 @@ def processFile(targetFile, nmapFile, desiredRoot, isNewFile):
         hostAttribs = make_attrib(hostName, unique_id)
         unique_id += 1
 
-        hostElement = ET.SubElement(parent,"node",attrib=hostAttribs)
+        hostElement = ET.SubElement(parent,"node",attrib=hostAttribs) #TODO: Check here - is there already a node with our chosen title? If so, it's a duplicate scan!
         hostDetails = ET.SubElement(hostElement,"rich_text") #No need for attribs here
         hostDetails.text = "WRITEUP: \n1)"
 
@@ -114,7 +114,10 @@ def processFile(targetFile, nmapFile, desiredRoot, isNewFile):
             service  = host.get_service(port[0],protocol=port[1]).service
             banner   = host.get_service(port[0],protocol=port[1]).banner
             
-            portAttribs = make_attrib("{}/{} - {}".format(portnum,protocol,service),unique_id) #TODO: Different icons for different port statuses? I know CT has them, but not their ID codes. Low priority.
+            #TODO: Here, again, we check - is there already a node with our chosen port specifier? (Just check the port/proto, not the rest - space delimeter.
+            #TODO: If so, this is a duplicate - add rather than overwrite!
+
+            portAttribs = make_attrib("{}/{} - {} ({})".format(portnum,protocol,service, "OPEN" if is_open else "CLOSED"),unique_id) #TODO: Different icons for different port statuses? I know CT has them, but not their ID codes. Low priority.
             unique_id += 1 #NEVER FORGET THIS!
 
             portElement = ET.SubElement(hostElement,"node",attrib=portAttribs)
