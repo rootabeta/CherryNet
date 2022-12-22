@@ -215,13 +215,13 @@ if args.format:
 
 if args.password: #Handle encrypted archives
     if 1==1: 
-        archive = filecrypto.Archive(args.cherrytreefile) 
+        archive = filecrypto.Archive(args.cherrytreefile,args.password) 
         targetFile = archive.open()
         processFile(targetFile, args.nmapxml, args.child_of, False) #New_file will be ignored
         archive.close()
     else: #New file
         raise NotImplementedError("CherryMap is not able to create a new file for encrypted volumes. Also, how did you get here? This is if 1==1 ... else. You are advised to apply for the Fields Medal, and to file a bug report.")
-        archive = filecrypto.Archive(args.cherrytreefile) #TODO: New encrypted files? Need a way to tell filecrypto.Archive() not to look for a CTZ... maybe set a flag to None? 
+        archive = filecrypto.Archive(args.cherrytreefile,args.password) #TODO: New encrypted files? Need a way to tell filecrypto.Archive() not to look for a CTZ... maybe set a flag to None? 
         targetFile = archive.new() 
         processFile(targetFile, args.nmapxml, 'cherrytree', True) #Child_Of will be ignored
         archive.close()
